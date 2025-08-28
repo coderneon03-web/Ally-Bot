@@ -3,20 +3,27 @@ const fs = require("fs");
 const path = require("path");
 const express = require("express");
 const { Client, Collection, GatewayIntentBits } = require("discord.js");
-require("dotenv").config(); // Load token from .env
+require("dotenv").config(); // Load .env
+
+// ===== Validate Token =====
+if (!process.env.TOKEN) {
+  console.error("❌ ERROR: No TOKEN found in .env file.");
+  process.exit(1);
+}
+if (!process.env.TOKEN.startsWith("M")) {
+  console.error("❌ ERROR: Invalid-looking TOKEN. Did you paste Client ID instead of Bot Token?");
+  console.error("Your TOKEN is:", process.env.TOKEN);
+  process.exit(1);
+}
 
 // ===== Express Server for Keep-Alive =====
 const app = express();
 app.use(express.static("."));
 
-// Root route
-app.get("/", (req, res) => res.send("Bot is running!"));
-
-// /ping route for keepalive.js
+app.get("/", (req, res) => res.send("🚀 Bot is running!"));
 app.get("/ping", (req, res) => res.send("Pong! Server alive 🚀"));
 
-// Listen on port 5000
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🌍 Uptime server running on port ${PORT}`));
 
 // ===== Discord Bot Setup =====
@@ -34,16 +41,16 @@ client.commands = new Collection();
 const prefix = "!";
 
 // ===== Command Handler =====
-const commandFiles = fs
-  .readdirSync(path.join(__dirname, "commands"))
-  .filter((file) => file.endsWith(".js"));
-
-for (const file of commandFiles) {
-  const command = require(`./commands/${file}`);
-  if (command.name) client.commands.set(command.name, command);
+const commandsPath = path.join(__dirname, "commands");
+if (fs.existsSync(commandsPath)) {
+  const commandFiles = fs.readdirSync(commandsPath).filter((file) => file.endsWith(".js"));
+  for (const file of commandFiles) {
+    const command = require(`./commands/${file}`);
+    if (command.name) client.commands.set(command.name, command);
+  }
 }
 
-// ===== Message Event =====
+// ===== Events =====
 client.on("messageCreate", async (message) => {
   if (!message.content.startsWith(prefix) || message.author.bot) return;
 
@@ -61,7 +68,7 @@ client.on("messageCreate", async (message) => {
   }
 });
 
-// ===== Anti-Nuke System =====
+// Anti-Nuke Logs
 client.on("guildMemberRemove", (member) => {
   console.log(`[AntiNuke] ${member.user.tag} left or was kicked/banned`);
 });
@@ -70,14 +77,11 @@ client.on("channelDelete", (channel) => {
   console.log(`[AntiNuke] Channel deleted: ${channel.name}`);
 });
 
-// ===== Ready Event =====
+// Ready
 client.once("ready", () => {
   console.log(`✅ Logged in as ${client.user.tag}`);
 });
 
-// ===== Debug token loading =====
-console.log("Token exists:", !!process.env.TOKEN);
-console.log("Token length:", process.env.TOKEN ? process.env.TOKEN.length : 0);
-
 // ===== Login =====
+console.log("✅ Token loaded. Length:", process.env.TOKEN.length);
 client.login(process.env.TOKEN);
