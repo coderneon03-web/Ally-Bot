@@ -1,0 +1,8 @@
+{
+  "installDependencies": true,
+  "startCommand": "node index.js",
+  "env": {
+    "TOKEN": "YOUR_DISCORD_BOT_TOKEN",
+    "PORT": "8080"
+  }
+}
