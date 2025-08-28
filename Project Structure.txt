@@ -1,0 +1,42 @@
+/my-discord-bot
+│── index.js           # main bot file (anti-nuke + core setup here)
+│── package.json       # dependencies
+│── config.json        # bot config (prefix, owners, etc.)
+│
+├── /commands
+│   ├── moderation/
+│   │   ├── ban.js
+│   │   ├── kick.js
+│   │   ├── mute.js
+│   │   └── warn.js
+│   │
+│   ├── tickets/
+│   │   ├── new.js
+│   │   ├── close.js
+│   │   └── add.js
+│   │
+│   ├── music/
+│   │   ├── play.js
+│   │   ├── skip.js
+│   │   ├── stop.js
+│   │   └── queue.js
+│   │
+│   ├── applications/
+│   │   ├── apply.js
+│   │   └── review.js
+│   │
+│   ├── fun/
+│   │   ├── meme.js
+│   │   ├── avatar.js
+│   │   └── 8ball.js
+│   │
+│   └── leveling/
+│       └── rank.js
+│
+├── /events
+│   ├── ready.js
+│   ├── messageCreate.js
+│   └── guildMemberAdd.js
+│
+└── utils/
+    └── antiNuke.js   # anti-raid & anti-nuke system

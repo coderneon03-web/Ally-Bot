@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Discord Bot</title>
+</head>
+<body>
+  <h1>✅ Bot is Online!</h1>
+  <p>Welcome to my Discord bot’s status page.</p>
+</body>
+</html>
+ <script>
+    // You would typically NOT expose your bot token in client-side JavaScript.
+    // This is for demonstration purposes ONLY and is extremely insecure!
+    // In a real application, you would handle bot interactions server-side.
+
+    // Replace with your actual bot token.  NEVER commit this to a public repository!
+    const botToken = "YOUR_BOT_TOKEN_HERE";
+
+    // Generate an invite link with administrator permissions.  Use with extreme caution!
+    const clientId = "YOUR_BOT_CLIENT_ID_HERE"; // Replace with your bot's client ID
+    const permissions = 8; // Administrator permissions (use with caution!)
+    const inviteLink = `https://discord.com/oauth2/authorize?client_id=${clientId}&permissions=${permissions}&scope=bot`;
+
+    // Create a link element and append it to the body.
+    const inviteLinkElement = document.createElement('a');
+    inviteLinkElement.href = inviteLink;
+    inviteLinkElement.textContent = "Invite my bot to your server!";
+    inviteLinkElement.target = "_blank"; // Open in a new tab
+
+    // Style the link
+    inviteLinkElement.style.display = 'block';
+    inviteLinkElement.style.marginTop = '20px';
+    inviteLinkElement.style.fontSize = '1.2em';
+
+    document.body.appendChild(inviteLinkElement);
+
+  </script>
